@@ -1,0 +1,43 @@
+﻿@model InovaPet.Models.Servico
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Servico</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdClienteNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdClienteNavigation.Cpf)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdFuncionarioNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdFuncionarioNavigation.Cargo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdPetNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdPetNavigation.Cor)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdServico">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

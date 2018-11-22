@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InovaPet", "InovaPet\InovaPet.csproj", "{A9022D3C-8605-479D-8168-DEE4EF3E4B30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9022D3C-8605-479D-8168-DEE4EF3E4B30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9022D3C-8605-479D-8168-DEE4EF3E4B30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9022D3C-8605-479D-8168-DEE4EF3E4B30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9022D3C-8605-479D-8168-DEE4EF3E4B30}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {173E59D1-44EA-4757-AC7A-87ED0D0281F0}
+	EndGlobalSection
+EndGlobal
