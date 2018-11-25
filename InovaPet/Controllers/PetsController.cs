@@ -25,6 +25,9 @@ namespace InovaPet
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: Pets/GetPetJson/Id
+      
+
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,7 +37,7 @@ namespace InovaPet
             }
 
             var pet = await _context.Pet
-                .Include(p => p.IdClienteNavigation)
+                .Include(p => p.IdClienteNavigation.Nome)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pet == null)
             {
@@ -47,7 +50,7 @@ namespace InovaPet
         // GET: Pets/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf");
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome");
             return View();
         }
 
@@ -81,7 +84,7 @@ namespace InovaPet
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf", pet.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome", pet.IdCliente);
             return View(pet);
         }
 

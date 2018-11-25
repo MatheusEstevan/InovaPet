@@ -34,9 +34,9 @@ namespace InovaPet
             }
 
             var servico = await _context.Servico
-                .Include(s => s.IdClienteNavigation)
-                .Include(s => s.IdFuncionarioNavigation)
-                .Include(s => s.IdPetNavigation)
+                .Include(s => s.IdClienteNavigation.Nome)
+                .Include(s => s.IdFuncionarioNavigation.Nome)
+                .Include(s => s.IdPetNavigation.Nome)
                 .FirstOrDefaultAsync(m => m.IdServico == id);
             if (servico == null)
             {
@@ -49,9 +49,9 @@ namespace InovaPet
         // GET: Servicos/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf");
-            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Cargo");
-            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Cor");
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome");
+            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Nome");
+            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Nome");
             return View();
         }
 
@@ -60,17 +60,21 @@ namespace InovaPet
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdServico,Valor,IdCliente,IdFuncionario,IdPet")] Servico servico)
+        public async Task<IActionResult> Create([Bind("IdServico,Valor,IdCliente,Titulo,IdFuncionario,IdPet,DataServico")] Servico servico)
         {
             if (ModelState.IsValid)
             {
+                servico.Valor = double.Parse(servico.Valor.ToString().Insert(servico.Valor.ToString().Length - 1, ","));
+                string nomePet = _context.Pet.Where(x => x.Id == servico.IdPet).First().Nome;
+                string nomeCliente = _context.Cliente.Where(x => x.Id == servico.IdCliente).First().Nome;
+                servico.Titulo += " - " + nomeCliente + " - " + nomePet;
                 _context.Add(servico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf", servico.IdCliente);
-            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Cargo", servico.IdFuncionario);
-            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Cor", servico.IdPet);
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome", servico.IdCliente);
+            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Nome", servico.IdFuncionario);
+            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Nome", servico.IdPet);
             return View(servico);
         }
 
@@ -87,8 +91,8 @@ namespace InovaPet
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf", servico.IdCliente);
-            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Cargo", servico.IdFuncionario);
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome", servico.IdCliente);
+            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Nome", servico.IdFuncionario);
             ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Cor", servico.IdPet);
             return View(servico);
         }
@@ -98,7 +102,7 @@ namespace InovaPet
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdServico,Valor,IdCliente,IdFuncionario,IdPet")] Servico servico)
+        public async Task<IActionResult> Edit(int id, [Bind("IdServico,Valor,IdCliente,IdFuncionario,IdPet,DataServico")] Servico servico)
         {
             if (id != servico.IdServico)
             {
@@ -109,6 +113,7 @@ namespace InovaPet
             {
                 try
                 {
+                   
                     _context.Update(servico);
                     await _context.SaveChangesAsync();
                 }
@@ -125,9 +130,9 @@ namespace InovaPet
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Cpf", servico.IdCliente);
-            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Cargo", servico.IdFuncionario);
-            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Cor", servico.IdPet);
+            ViewData["IdCliente"] = new SelectList(_context.Cliente, "Id", "Nome", servico.IdCliente);
+            ViewData["IdFuncionario"] = new SelectList(_context.Funcionario, "Id", "Nome", servico.IdFuncionario);
+            ViewData["IdPet"] = new SelectList(_context.Pet, "Id", "Nome", servico.IdPet);
             return View(servico);
         }
 
@@ -167,5 +172,42 @@ namespace InovaPet
         {
             return _context.Servico.Any(e => e.IdServico == id);
         }
+
+
+        #region custom
+
+        public ActionResult CalcularValor(int idPet, int idServico)
+        {
+            double precoPorKgBanho = 4;
+            double precoPorKgTosa = 4;
+            double precoPorKgBanhoTosa = 7;
+            if (_context.Pet.Where(x => x.Id == idPet).ToList().Count > 0)
+            {
+                JsonResult retorno;
+                Pet pet = _context.Pet.Where(x => x.Id == idPet)
+                                               .First();
+                double valorTotal;
+                if (idServico == (int)Enums.Enums.servicos.Banho)
+                {
+                    valorTotal = precoPorKgBanho * Convert.ToDouble(pet.Peso.Replace(".", ","));
+                }
+                else if (idServico == (int)Enums.Enums.servicos.TosaBanho)
+                {
+                    valorTotal = precoPorKgBanhoTosa * Convert.ToDouble(pet.Peso.Replace(".", ","));
+                }
+                else if (idServico == (int)Enums.Enums.servicos.Tosa)
+                {
+                    valorTotal = precoPorKgTosa * Convert.ToDouble(pet.Peso.Replace(".", ","));
+                }
+                else
+                {
+                    valorTotal = 0;
+                }
+                retorno = Json(valorTotal);
+                return retorno;
+            }
+            return null;
+        }
+        #endregion
     }
 }

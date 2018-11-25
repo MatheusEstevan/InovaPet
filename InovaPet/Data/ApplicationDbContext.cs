@@ -108,6 +108,10 @@ namespace InovaPet.Models
             {
                 entity.HasKey(e => e.IdServico);
 
+                entity.Property(e => e.DataServico).HasColumnType("datetime");
+
+                entity.Property(e => e.Titulo).HasMaxLength(255);
+
                 entity.HasOne(d => d.IdClienteNavigation)
                     .WithMany(p => p.Servico)
                     .HasForeignKey(d => d.IdCliente)

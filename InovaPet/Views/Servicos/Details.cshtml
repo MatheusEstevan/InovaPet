@@ -12,32 +12,41 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dt>
             @Html.DisplayNameFor(model => model.Valor)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Valor)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.DataServico)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataServico)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.IdClienteNavigation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IdClienteNavigation.Cpf)
+            @Html.DisplayFor(model => model.IdClienteNavigation.Nome)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IdFuncionarioNavigation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IdFuncionarioNavigation.Cargo)
+            @Html.DisplayFor(model => model.IdFuncionarioNavigation.Nome)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IdPetNavigation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IdPetNavigation.Cor)
+            @Html.DisplayFor(model => model.IdPetNavigation.Nome)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.IdServico">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar</a>
 </div>

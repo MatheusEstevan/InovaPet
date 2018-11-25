@@ -5,42 +5,94 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Novo Serviço</h2>
 
-<h4>Servico</h4>
+<h4>Serviço</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="IdCliente" class="control-label"></label>
+                <select asp-for="IdCliente" class="form-control" id="Pet" asp-items="ViewBag.IdCliente"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdFuncionario" class="control-label"></label>
+                <select asp-for="IdFuncionario" class="form-control" asp-items="ViewBag.IdFuncionario"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPet" class="control-label"></label>
+                <select asp-for="IdPet" class="form-control" asp-items="ViewBag.IdPet"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataServico" class="control-label"></label>
+                <input asp-for="DataServico" class="form-control" />
+                <span asp-validation-for="DataServico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <select asp-for="Titulo" class="form-control" name="Titulo" id="servicos">
+                    <option id="1">Tosa e Banho</option>
+                    <option id="2">Tosa</option>
+                    <option id="3">Banho</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
                 <input asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdCliente" class="control-label"></label>
-                <select asp-for="IdCliente" class ="form-control" asp-items="ViewBag.IdCliente"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdFuncionario" class="control-label"></label>
-                <select asp-for="IdFuncionario" class ="form-control" asp-items="ViewBag.IdFuncionario"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdPet" class="control-label"></label>
-                <select asp-for="IdPet" class ="form-control" asp-items="ViewBag.IdPet"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+              @*  <input type="submit" value="Create" class="btn btn-default" />*@
+                <button type="submit" class="btn btn-default btn-inovapet" value="Create">Criar</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+
+    $("#IdPet").change(function () {
+        calcularPreco();
+    });
+
+    $("#servicos").change(function () {
+        calcularPreco();
+    });
+
+    $(document).ready(calcularPreco());
+   
+
+    function calcularPreco() {
+        var servico = $("#servicos").children(":selected").attr("id");
+        var pet = $("#IdPet").children(":selected").val();
+        $.ajax({
+            url: "/Servicos/CalcularValor",
+            type: "get",
+            data: {
+                idPet: pet,
+                idServico: servico
+            },
+            success: function (response) {
+
+                $("#Valor").val(response);
+            },
+            error: function (xhr) {
+                console.log("Erro ao encontrar animal");
+            }
+        });
+    }
+
+   
+</script>

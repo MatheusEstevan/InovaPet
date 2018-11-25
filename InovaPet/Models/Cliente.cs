@@ -13,7 +13,7 @@ namespace InovaPet.Models
 
         public int Id { get; set; }
         public string Nome { get; set; }
-        public bool? Mensalista { get; set; }
+        public bool Mensalista { get; set; }
         public string Endereço { get; set; }
         public string Telefone { get; set; }
         public string Cpf { get; set; }

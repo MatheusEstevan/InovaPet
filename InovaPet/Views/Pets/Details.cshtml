@@ -57,11 +57,11 @@
             @Html.DisplayNameFor(model => model.IdClienteNavigation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IdClienteNavigation.Cpf)
+            @Html.DisplayFor(model => model.IdClienteNavigation.Nome)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
+    <a asp-action="Index">Voltar para lista</a>
 </div>

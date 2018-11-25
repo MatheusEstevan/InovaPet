@@ -35,3 +35,21 @@ body {
         display: none;
     }
 }
+
+.btn-inovapet {
+    color: white;
+    background: #009689;
+}
+
+.navbar {
+    background: #009689;
+    border-color:#009689 ;
+    color:white;
+}
+
+
+.navbar  a{
+   
+    color: white !important;
+}
+
